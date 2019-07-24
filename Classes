@@ -21,19 +21,10 @@ namespace Project_Demo
 {
     interface IComputeCal
     {
-         public interface ICalculateMaxWeight
-         {
-             double CalculateMaxWeight();
-         }
-        public interface  IFuelBurnt
-        {
-            double FuelBurnt();
-        }
-
-        public interface LivesAid // this method will compute points before the pilot and jet are distroyed by obstacles
-        {
-            int LivesAid();
-        }
+         double  ICalculateMaxWeight(double calculateMaxWeight);
+        
+        double  IFuelBurnt(double fuelBurnt);
+      
        
     }
 }
@@ -138,14 +129,23 @@ namespace Project_Demo
             set { maxWeight = value; }
         }
 
+        private double speed;
 
-        public Jets(int jetID, string jetModel, int fuelTankCapacity, double height, double maxWeight)
+        public double Speed
+         {
+            get{return speed; }
+            set {height = value; }
+        }
+
+
+        public Jets(int jetID, string jetModel, int fuelTankCapacity, double height, double maxWeight, double speed)
         {
             this.jetID = jetID;
             this.jetModel = jetModel;
             this.fuelTankCapacity = fuelTankCapacity;
             this.height = height;
             this.maxWeight = maxWeight;
+            this.speed = speed;
             // I changed weight to max weight because we already getting weight from inventory class, so we will compute using the one in Inventory 
             //Then compare to see if it is bigger or smaller than max weight 
         }
