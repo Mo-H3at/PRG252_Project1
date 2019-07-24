@@ -1,0 +1,12 @@
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\bin\Debug\PRG252_Project.exe.config
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\bin\Debug\PRG252_Project.exe
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\bin\Debug\PRG252_Project.pdb
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\obj\Debug\PRG252_Project.csprojAssemblyReference.cache
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\obj\Debug\PRG252_Project.FrmBaseCamp.resources
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\obj\Debug\PRG252_Project.Hangar.resources
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\obj\Debug\PRG252_Project.Obstacles.resources
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\obj\Debug\PRG252_Project.Properties.Resources.resources
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\obj\Debug\PRG252_Project.csproj.GenerateResource.cache
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\obj\Debug\PRG252_Project.csproj.CoreCompileInputs.cache
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\obj\Debug\PRG252_Project.exe
+C:\Users\USER\Desktop\PRG252_Project\PRG252_Project\PRG252_Project\obj\Debug\PRG252_Project.pdb
