@@ -1,0 +1,852 @@
+CREATE PROCEDURE SPInsertNewJetDetails
+		@newJet varchar(50),
+		@newFuelTankCapacity int,
+		@newHeight decimal(18, 2),
+		@newMaxWeight decimal(18, 2),
+		@newSpeed decimal(18, 2),
+		@newInventory int
+
+AS
+BEGIN
+	INSERT INTO tblReport(JetModel,FuelTankCapacity,Height,MaxWeight,Speed,InventoryID)
+	VALUES (@newJet,@newFuelTankCapacity,@newHeight,@newMaxWeight,@newSpeed,@newInventory)
+END
+GO
+
+CREATE PROCEDURE SPUpdateFuel
+		@idToUpdate int,
+		@fuelLevelToUpdate int
+
+AS
+BEGIN
+	UPDATE tblJet
+	Set FuelTankCapacity = @fuelLevelToUpdate
+	WHERE JetID = @idToUpdate
+END
+GO
+
+CREATE PROCEDURE SPInsertObstacle
+		@DescriptionToAdd varchar(MAX),
+		@RangeToAdd int
+
+AS
+BEGIN
+	INSERT INTO tblObstacles(Description,Range)
+	VALUES (@DescriptionToAdd,@RangeToAdd)
+	
+END
+GO
+==========================================================================================================
+
+USE [master]
+GO
+/****** Object:  Database [dbMilitary]    Script Date: 24/07/2019 10:35:08 PM ******/
+CREATE DATABASE [dbMilitary]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'dbMilitary', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\dbMilitary.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'dbMilitary_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\dbMilitary_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [dbMilitary] SET COMPATIBILITY_LEVEL = 120
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [dbMilitary].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [dbMilitary] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [dbMilitary] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [dbMilitary] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [dbMilitary] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [dbMilitary] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [dbMilitary] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [dbMilitary] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [dbMilitary] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [dbMilitary] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [dbMilitary] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [dbMilitary] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [dbMilitary] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [dbMilitary] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [dbMilitary] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [dbMilitary] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [dbMilitary] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [dbMilitary] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [dbMilitary] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [dbMilitary] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [dbMilitary] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [dbMilitary] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [dbMilitary] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [dbMilitary] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [dbMilitary] SET  MULTI_USER 
+GO
+ALTER DATABASE [dbMilitary] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [dbMilitary] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [dbMilitary] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [dbMilitary] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+ALTER DATABASE [dbMilitary] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'dbMilitary', N'ON'
+GO
+ALTER DATABASE [dbMilitary] SET QUERY_STORE = OFF
+GO
+USE [dbMilitary]
+GO
+/****** Object:  Table [dbo].[tblInventory]    Script Date: 24/07/2019 10:35:09 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblInventory](
+	[InventoryID] [int] IDENTITY(1,1) NOT NULL,
+	[Item] [varchar](max) NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[Weight] [decimal](18, 2) NOT NULL,
+ CONSTRAINT [PK_tblInventory] PRIMARY KEY CLUSTERED 
+(
+	[InventoryID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblJet]    Script Date: 24/07/2019 10:35:10 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblJet](
+	[JetID] [int] IDENTITY(1,1) NOT NULL,
+	[JetModel] [varchar](50) NOT NULL,
+	[FuelTankCapacity] [int] NOT NULL,
+	[Height] [decimal](18, 2) NOT NULL,
+	[MaxWeight] [decimal](18, 2) NOT NULL,
+	[Speed] [decimal](18, 2) NOT NULL,
+	[InventoryID] [int] NOT NULL,
+ CONSTRAINT [PK_tblJet] PRIMARY KEY CLUSTERED 
+(
+	[JetID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblObstacles]    Script Date: 24/07/2019 10:35:10 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblObstacles](
+	[ObstacleID] [int] IDENTITY(1,1) NOT NULL,
+	[Description] [varchar](max) NOT NULL,
+	[Range] [int] NOT NULL,
+ CONSTRAINT [PK_tblObstacles] PRIMARY KEY CLUSTERED 
+(
+	[ObstacleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblReport]    Script Date: 24/07/2019 10:35:10 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblReport](
+	[ReportID] [int] IDENTITY(1,1) NOT NULL,
+	[DamageAnalysis] [varchar](50) NOT NULL,
+	[SuccessRate] [int] NOT NULL,
+	[TimeOfStrike] [varchar](50) NOT NULL,
+	[LocationTargeted] [varchar](50) NULL,
+	[LocationHit] [varchar](50) NULL,
+	[TargetsIdentified] [int] NULL,
+	[TargetsChoosen] [int] NULL,
+	[ObstaclesIdentified] [int] NULL,
+	[ObstaclesAvoided] [int] NULL,
+	[ReasonForAvoidance] [varchar](80) NULL,
+ CONSTRAINT [PK_tblReport] PRIMARY KEY CLUSTERED 
+(
+	[ReportID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[tblInventory] ON 
+
+INSERT [dbo].[tblInventory] ([InventoryID], [Item], [Quantity], [Weight]) VALUES (1, N'Scanner', 1, CAST(23.00 AS Decimal(18, 2)))
+INSERT [dbo].[tblInventory] ([InventoryID], [Item], [Quantity], [Weight]) VALUES (2, N'Rockets', 4, CAST(25.55 AS Decimal(18, 2)))
+INSERT [dbo].[tblInventory] ([InventoryID], [Item], [Quantity], [Weight]) VALUES (3, N'Napalm', 10, CAST(12.50 AS Decimal(18, 2)))
+INSERT [dbo].[tblInventory] ([InventoryID], [Item], [Quantity], [Weight]) VALUES (4, N'Supplies', 100, CAST(1.10 AS Decimal(18, 2)))
+INSERT [dbo].[tblInventory] ([InventoryID], [Item], [Quantity], [Weight]) VALUES (5, N'Explosive', 5, CAST(10.95 AS Decimal(18, 2)))
+SET IDENTITY_INSERT [dbo].[tblInventory] OFF
+SET IDENTITY_INSERT [dbo].[tblJet] ON 
+
+INSERT [dbo].[tblJet] ([JetID], [JetModel], [FuelTankCapacity], [Height], [MaxWeight], [Speed], [InventoryID]) VALUES (1, N'Drone', 100, CAST(17000.00 AS Decimal(18, 2)), CAST(120.00 AS Decimal(18, 2)), CAST(7000.00 AS Decimal(18, 2)), 1)
+INSERT [dbo].[tblJet] ([JetID], [JetModel], [FuelTankCapacity], [Height], [MaxWeight], [Speed], [InventoryID]) VALUES (2, N'Shooter', 120, CAST(14000.00 AS Decimal(18, 2)), CAST(187.50 AS Decimal(18, 2)), CAST(9000.00 AS Decimal(18, 2)), 2)
+INSERT [dbo].[tblJet] ([JetID], [JetModel], [FuelTankCapacity], [Height], [MaxWeight], [Speed], [InventoryID]) VALUES (4, N'Bomber', 80, CAST(5000.00 AS Decimal(18, 2)), CAST(223.70 AS Decimal(18, 2)), CAST(6000.00 AS Decimal(18, 2)), 3)
+SET IDENTITY_INSERT [dbo].[tblJet] OFF
+SET IDENTITY_INSERT [dbo].[tblObstacles] ON 
+
+INSERT [dbo].[tblObstacles] ([ObstacleID], [Description], [Range]) VALUES (1, N'Long Bow Cannon', 180)
+INSERT [dbo].[tblObstacles] ([ObstacleID], [Description], [Range]) VALUES (2, N'RE-45 Missile Launcher', 122)
+INSERT [dbo].[tblObstacles] ([ObstacleID], [Description], [Range]) VALUES (3, N'EMP Launcher', 100)
+INSERT [dbo].[tblObstacles] ([ObstacleID], [Description], [Range]) VALUES (4, N'Gunrail Cannons', 150)
+SET IDENTITY_INSERT [dbo].[tblObstacles] OFF
+ALTER TABLE [dbo].[tblJet]  WITH CHECK ADD  CONSTRAINT [FK_tblJet_tblInventory] FOREIGN KEY([InventoryID])
+REFERENCES [dbo].[tblInventory] ([InventoryID])
+GO
+ALTER TABLE [dbo].[tblJet] CHECK CONSTRAINT [FK_tblJet_tblInventory]
+GO
+/****** Object:  StoredProcedure [dbo].[SPInsertNewJetDetails]    Script Date: 24/07/2019 10:35:10 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SPInsertNewJetDetails]
+		@newJet varchar(50),
+		@newFuelTankCapacity int,
+		@newHeight decimal(18, 2),
+		@newMaxWeight decimal(18, 2),
+		@newSpeed decimal(18, 2),
+		@newInventory int
+
+AS
+BEGIN
+	INSERT INTO tblReport(JetModel,FuelTankCapacity,Height,MaxWeight,Speed,InventoryID)
+	VALUES (@newJet,@newFuelTankCapacity,@newHeight,@newMaxWeight,@newSpeed,@newInventory)
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SPInsertObstacle]    Script Date: 24/07/2019 10:35:10 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SPInsertObstacle]
+		@DescriptionToAdd varchar(MAX),
+		@RangeToAdd int
+
+AS
+BEGIN
+	INSERT INTO tblObstacles(Description,Range)
+	VALUES (@DescriptionToAdd,@RangeToAdd)
+	
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SPUpdateFuel]    Script Date: 24/07/2019 10:35:10 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SPUpdateFuel]
+		@idToUpdate int,
+		@fuelLevelToUpdate int
+
+AS
+BEGIN
+	UPDATE tblJet
+	Set FuelTankCapacity = @fuelLevelToUpdate
+	WHERE JetID = @idToUpdate
+END
+
+GO
+USE [master]
+GO
+ALTER DATABASE [dbMilitary] SET  READ_WRITE 
+GO
+======================================================================================
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRG252_Project", "PRG252_Project\PRG252_Project.csproj", "{CC635084-E085-46DA-871B-EFAC53B4F094}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC635084-E085-46DA-871B-EFAC53B4F094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC635084-E085-46DA-871B-EFAC53B4F094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC635084-E085-46DA-871B-EFAC53B4F094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC635084-E085-46DA-871B-EFAC53B4F094}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {127264E0-D3B1-491A-8A54-7A70F5CA40FA}
+	EndGlobalSection
+EndGlobal
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PRG252_Project
+{
+    class Jets
+    {
+        private int jetID;
+
+        public int JetID
+        {
+            get { return jetID; }
+            set { jetID = value; }
+        }
+        private string jetModel;
+
+        public string JetModel
+        {
+            get { return jetModel; }
+            set { jetModel = value; }
+        }
+        private int fuelTankCapacity;
+
+        public int FuelTankCapacity
+        {
+            get { return fuelTankCapacity; }
+            set { fuelTankCapacity = value; }
+        }
+
+        private int fuelLevel;
+
+        public int FuelLevel
+        {
+            get { return fuelLevel; }
+            set { fuelLevel = value; }
+        }
+
+        private double height;
+
+        public double Height
+        {
+            get { return height; }
+            set { height = value; }
+        }
+        private double maxWeight;
+
+        public double MaxWeight
+        {
+            get { return maxWeight; }
+            set { maxWeight = value; }
+        }
+
+
+        public Jets(int jetID, string jetModel, int fuelTankCapacity, int fuelLevel, double height, double maxWeight)
+        {
+            this.jetID = jetID;
+            this.jetModel = jetModel;
+            this.fuelTankCapacity = fuelTankCapacity;
+            this.height = height;
+            this.maxWeight = maxWeight;
+            this.fuelLevel = fuelLevel;
+            // I changed weight to max weight because we already getting weight from inventory class, so we will compute using the one in Inventory 
+            //Then compare to see if it is bigger or smaller than max weight 
+        }
+ 
+    }
+    
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PRG252_Project
+{
+    class Obstacle
+    {
+        private int obstacleID;
+
+        public int ObstacleID
+        {
+            get { return obstacleID; }
+            set { obstacleID = value; }
+        }
+        private string description;
+
+        public string Description1
+        {
+            get { return description; }
+            set { description = value; }
+        }
+        private string range;
+
+        public string Range
+        {
+            get { return range; }
+            set { range = value; }
+        }
+
+        public Obstacle(int obstacleID, string description, string range)
+        {
+            this.obstacleID = obstacleID;
+            this.description = description;
+            this.range = range;
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Data;
+using System.Windows.Forms;
+
+namespace PRG252_Project
+{
+    class DataHandler
+    {
+        //Data Source=DESKTOP-UNH4V14;Initial Catalog=dbMilitary;Integrated Security=True
+        SqlConnectionStringBuilder connection = new SqlConnectionStringBuilder();
+        SqlConnection conn;
+
+        public DataHandler()
+        {
+            connection.DataSource = @"DESKTOP-UNH4V14";
+            connection.InitialCatalog = "dbMilitary";
+            connection.IntegratedSecurity = true;
+            conn = new SqlConnection(connection.ToString());
+        }
+
+        public DataSet ReadData(string tblName)
+        {
+            DataSet rawData = new DataSet();
+
+            SqlConnection conn = new SqlConnection(connection.ToString());
+            string qry = string.Format("SELECT * FROM {0}", tblName);
+            try
+            {
+                conn.Open();
+                SqlDataAdapter adapter = new SqlDataAdapter(qry, conn);
+                adapter.FillSchema(rawData, SchemaType.Source, tblName);
+                adapter.Fill(rawData, tblName);
+            }
+            catch (SqlException se)
+            {
+                MessageBox.Show(se.Message);
+
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            return rawData;
+        }
+
+        // After the jet completes its mission to scout we save the data of the trip using this query 
+        public int InsertCompleteTrip(string damagaeAnalysis, int successRate, double timeOfStrike, double locationTargeted, double locationHit, int targetsIdentified, int targetsChoosen, int ObstaclesIdentified)
+        {
+            int changed = 0;
+            try
+            {
+                SqlCommand command = new SqlCommand("SPInsertCompleteTrip", conn);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@damage", damagaeAnalysis);
+                command.Parameters.AddWithValue("@succes", successRate);
+                command.Parameters.AddWithValue("@strikeTime", timeOfStrike);
+                command.Parameters.AddWithValue("@locaTragetred", locationTargeted);
+                command.Parameters.AddWithValue("@locationhit", locationHit);
+                command.Parameters.AddWithValue("@targetIdentity", targetsIdentified);
+                command.Parameters.AddWithValue("@targetchoosen", targetsChoosen);
+                command.Parameters.AddWithValue("@obstaclesIdentity", ObstaclesIdentified);
+
+            }
+            catch (SqlException se)
+            {
+                MessageBox.Show(se.Message);
+
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            return changed;
+        }
+
+        public int InsertNewJet(string newJetModel, int newfuelTankCapacity, double newHeight, double newMaxWeight, double newSpeed, int newInventory)
+
+        {
+            int changed = 0;
+            //SqlConnection conn = new SqlConnection(connection.ToString());
+            try
+            {
+
+                SqlCommand command = new SqlCommand("SPInsertNewJet", conn);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@newJet", newJetModel);
+                command.Parameters.AddWithValue("@newFuelTankcapacity", newfuelTankCapacity);
+                command.Parameters.AddWithValue("@newHeight", newHeight);
+                command.Parameters.AddWithValue("@newMaxWeight", newMaxWeight);
+                command.Parameters.AddWithValue("@newSpeed", newSpeed);
+                command.Parameters.AddWithValue("@newInventory", newInventory);
+            }
+            catch (SqlException se)
+            {
+                MessageBox.Show(se.Message);
+
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            return changed;
+        }
+
+        //this will allow the user to top up fuel befor the jet takes off, we will update only the fuel on that ID
+
+
+        public int UpdateFuelStoredProc(int idToUpdate, int fuelLevelToUpdate)
+        {
+            int changed = 0;
+
+            try
+            {
+                SqlCommand command = new SqlCommand("SPUpdateFuel", conn);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@fuelLevelToUpdate", fuelLevelToUpdate);
+                command.Parameters.AddWithValue("@idToUpdate",idToUpdate);
+                conn.Open();
+                changed = command.ExecuteNonQuery();
+            }
+            catch (SqlException se)
+            {
+
+                MessageBox.Show(se.Message);
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+
+            return changed;
+        }
+
+
+        public int InsertObstacleSproc(string newDescription, int  newRange)
+        {
+            int changed = 0;
+
+            try
+            {
+                SqlCommand command = new SqlCommand("SPInsertObstacle", conn);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@DescriptionToAdd", newDescription);
+                command.Parameters.AddWithValue("@RangeToAdd", newRange);
+
+
+                conn.Open();
+                changed = command.ExecuteNonQuery();
+            }
+            catch (SqlException se)
+            {
+
+                MessageBox.Show(se.Message);
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            return changed;
+        }
+
+
+    }
+
+
+}
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace PRG252_Project
+{
+    public partial class Enemy_Camp : Form
+    {
+        int x = 104, y = 41;//x and y are for moving horizontally
+        string launch = "Go";
+
+        public Enemy_Camp()
+        {
+            InitializeComponent();
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            lblJet.SetBounds(x, y, 1, 1);
+            if (launch == "Go")
+            {
+                x++;
+            }
+            if (x == 780)
+            {
+                launch = "Attack"; 
+                y++;
+            }
+            if (y == 379)
+            {
+                x--;
+            }
+            if (x == 94)
+            {
+                y--;
+            }
+            if (y == 242)
+            {
+                x++;
+            }
+            if (x == 415)
+            {
+                y--;
+            }
+        }
+
+        private void Enemy_Camp_Load(object sender, EventArgs e)
+        {
+            timer2.Interval = 1; //1 second
+            timer2.Start();
+        }
+
+      
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+namespace PRG252_Project
+{
+    class FileHandler
+    {
+        FileStream stream;
+        StreamReader reader;
+        StreamWriter writer;
+        public List<string> ReadData(string fileName)
+        {
+            List<string> rawData = new List<string>();
+
+            try
+            {
+                stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                reader = new StreamReader(stream);
+                string line = string.Empty;
+                while ((line = reader.ReadLine()) != null)
+                {
+
+                    rawData.Add(line);
+                }
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                MessageBox.Show(fnfe.Message);
+            }
+            catch (DirectoryNotFoundException dnfe)
+            {
+                MessageBox.Show(dnfe.Message);
+            }
+            finally
+            {
+
+
+
+
+                reader.Close();
+                stream.Close();
+            }
+
+            return rawData;
+        }
+        public void WriteData(string fileName, string dataToWrite)
+        {
+            try
+            {
+                stream = new FileStream(fileName, FileMode.Append, FileAccess.Write);
+                writer = new StreamWriter(stream);
+                writer.WriteLine(dataToWrite);
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                MessageBox.Show(fnfe.Message);
+            }
+            catch (DirectoryNotFoundException dnfe)
+            {
+                MessageBox.Show(dnfe.Message);
+            }
+            finally
+            {
+
+                writer.Close();
+                stream.Close();
+            }
+
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace PRG252_Project
+{
+    public partial class Hangar : Form
+    {
+        public Hangar()
+        {
+            InitializeComponent();
+        }
+
+        private void Hangar_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PRG252_Project
+{
+    interface IComputeCal
+
+    {
+        public interface ICalculateMaxWeight
+        {
+            double CalculateMaxWeight();
+        }
+        public interface IFuelBurnt
+        {
+            double FuelBurnt();
+        }
+
+        public interface LivesAid // this method will compute points before the pilot and jet are distroyed by obstacles
+        {
+            int LivesAid();
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PRG252_Project
+{
+    class IDataHandler
+    {
+
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PRG252_Project
+{
+    class Inventory
+    {
+        private int inventoryID;
+
+        public int InventoryID
+        {
+            get { return inventoryID; }
+            set { inventoryID = value; }
+        }
+        private string item;
+
+        public string Item
+        {
+            get { return item; }
+            set { item = value; }
+        }
+        private int quantity;
+
+        public int Quantity
+        {
+            get { return quantity; }
+            set { quantity = value; }
+        }
+        private double weight;
+
+        public double Weight
+        {
+            get { return weight; }
+            set { weight = value; }
+        }
+    }
+}
