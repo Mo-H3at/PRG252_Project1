@@ -80,6 +80,19 @@ namespace Project_Demo
             get { return weight; }
             set { weight = value; }
         }
+
+         public Inventory()
+        {
+
+        }
+
+        public Inventory(int inventoryID, string item, int quantity, double weight)
+        {
+            this.inventoryID = inventoryID;
+            this.item = item;
+            this.quantity = quantity;
+            this.weight = weight;
+        }
     }
 }
 -----------------------------------------------------------------
@@ -178,19 +191,31 @@ namespace Project_Demo
             get { return obstacleID; }
             set { obstacleID = value; }
         }
-        private string Description;
+        private string description;
 
-        public string Description1
+        public string Description
         {
             get { return Description; }
             set { Description = value; }
         }
-        private string range;
+        private int range;
 
-        public string Range
+        public int Range
         {
             get { return range; }
             set { range = value; }
+        }
+
+        public Obstacle(int obstacleID, string description, int range)
+        {
+            this.obstacleID = obstacleID;
+            this.description = description;
+            this.range = range;
+        }
+
+         public Obstacle()
+        {
+
         }
     }
 }
