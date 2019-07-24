@@ -1,1 +1,201 @@
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project_Demo
+{
+    class DataHandler
+    {
+    }
+}
+------------------------------------------------------------------------------using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project_Demo
+{
+    interface IComputeCal
+    {
+         public interface ICalculateMaxWeight
+         {
+             double CalculateMaxWeight();
+         }
+        public interface  IFuelBurnt
+        {
+            double FuelBurnt();
+        }
+
+        public interface LivesAid // this method will compute points before the pilot and jet are distroyed by obstacles
+        {
+            int LivesAid();
+        }
+       
+    }
+}
+------------------------------------------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project_Demo
+{
+    interface IDataHandler
+    {
+    }
+}
+----------------------------------------------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project_Demo
+{
+    class Inventory
+    {
+        private int inventoryID;
+
+        public int InventoryID
+        {
+            get { return inventoryID; }
+            set { inventoryID = value; }
+        }
+        private string item;
+
+        public string Item
+        {
+            get { return item; }
+            set { item = value; }
+        }
+        private int quantity;
+
+        public int Quantity
+        {
+            get { return quantity; }
+            set { quantity = value; }
+        }
+        private double weight;
+
+        public double Weight
+        {
+            get { return weight; }
+            set { weight = value; }
+        }
+    }
+}
+-----------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project_Demo
+{
+    class Jets
+    {
+        private int jetID;
+
+        public int JetID
+        {
+            get { return jetID; }
+            set { jetID = value; }
+        }
+        private string jetModel;
+
+        public string JetModel
+        {
+            get { return jetModel; }
+            set { jetModel = value; }
+        }
+        private int fuelTankCapacity;
+
+        public int FuelTankCapacity
+        {
+            get { return fuelTankCapacity; }
+            set { fuelTankCapacity = value; }
+        }
+        private double height;
+
+        public double Height
+        {
+            get { return height; }
+            set { height = value; }
+        }
+        private double maxWeight;
+
+        public double MaxWeight
+        {
+            get { return maxWeight; }
+            set { maxWeight = value; }
+        }
+
+
+        public Jets(int jetID, string jetModel, int fuelTankCapacity, double height, double maxWeight)
+        {
+            this.jetID = jetID;
+            this.jetModel = jetModel;
+            this.fuelTankCapacity = fuelTankCapacity;
+            this.height = height;
+            this.maxWeight = maxWeight;
+            // I changed weight to max weight because we already getting weight from inventory class, so we will compute using the one in Inventory 
+            //Then compare to see if it is bigger or smaller than max weight 
+        }
+
+        public Jets()
+        {
+                
+        }
+
+
+
+
+    }
+}
+----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project_Demo
+{
+    class Obstacle
+    {
+        private int obstacleID;
+
+        public int ObstacleID
+        {
+            get { return obstacleID; }
+            set { obstacleID = value; }
+        }
+        private string Description;
+
+        public string Description1
+        {
+            get { return Description; }
+            set { Description = value; }
+        }
+        private string range;
+
+        public string Range
+        {
+            get { return range; }
+            set { range = value; }
+        }
+    }
+}
+
+----------------------------------------------------
+
+
+
